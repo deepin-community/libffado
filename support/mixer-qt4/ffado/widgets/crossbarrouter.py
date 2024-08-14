@@ -3,7 +3,7 @@
 #               2013 by Philippe Carriere
 #
 # This file is part of FFADO
-# FFADO = Free Firewire (pro-)audio drivers for linux
+# FFADO = Free FireWire (pro-)audio drivers for Linux
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ class VuMeter(QFrame):
         p = QPainter(self)
         value = self.level/4096
         r = self.rect()
-        r.setHeight(r.height() * math.sqrt(value))
+        r.setHeight(int(r.height() * math.sqrt(value)))
         r.moveBottom(self.rect().height())
         p.fillRect(r, self.palette().highlight())
 

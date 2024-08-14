@@ -3,7 +3,7 @@
  * Copyright (C) 2005-2008 by Pieter Palmers
  *
  * This file is part of FFADO
- * FFADO = Free Firewire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for Linux
  *
  * FFADO is based upon FreeBoB.
  *
@@ -110,7 +110,7 @@ DigidesignTransmitStreamProcessor::generatePacketHeader (
     // identified that an empty packet should be sent then "length" will be
     // overriden in generateEmptyPacketHeader().
     //
-    // As per the firewire standards, only set "tag" if the Digidesign
+    // As per the FireWire standards, only set "tag" if the Digidesign
     // expects a CIP header in the first two bytes of "data".  Similarly,
     // remove the "+8" from the length calculation if no CIP header is to be
     // included.

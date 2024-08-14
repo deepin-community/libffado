@@ -3,7 +3,7 @@
 # Copyright (C) 2014 Takashi Sakamoto <o-takashi@sakamocchi.jp>
 #
 # This file is part of FFADO
-# FFADO = Free Firewire (pro-)audio drivers for linux
+# FFADO = Free FireWire (pro-)audio drivers for Linux
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -217,7 +217,7 @@ class Presonus_Inspire1394(QWidget):
 
            db = self.hw.getContignuous(path, idx)
            vol = self.db2vol(db)
-           ctl.setValue(vol)
+           ctl.setValue(int(vol))
            ctl.valueChanged.connect(self.updateVolume)
 
            if vol == 0:
@@ -247,7 +247,7 @@ class Presonus_Inspire1394(QWidget):
 
             val = self.hw.getContignuous(path, idx)
             state = -(val / 0x7FFE) * 50 + 50
-            ctl.setValue(state)
+            ctl.setValue(int(state))
             ctl.valueChanged.connect(self.updatePanning)
 
         for ctl, params in self.Mutes.items():

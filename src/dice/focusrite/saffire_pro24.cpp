@@ -3,7 +3,7 @@
  * Copyright (C) 2009 by Arnold Krille
  *
  * This file is part of FFADO
- * FFADO = Free Firewire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for Linux
  *
  * FFADO is based upon FreeBoB.
  *
@@ -27,6 +27,7 @@
 
 #include "libutil/ByteSwap.h"
 #include <cstdio>
+#include <sstream>
 
 namespace Dice {
 namespace Focusrite {
@@ -199,7 +200,7 @@ SaffirePro24::SaffirePro24EAP::setupDefaultRouterConfig_mid() {
  */
 void
 SaffirePro24::SaffirePro24EAP::setupDefaultRouterConfig_high() {
-    printMessage("High (192 kHz) sample rate not supported by Saffire Pro 40\n");
+    printMessage("High (192 kHz) sample rate not supported by Saffire Pro 24\n");
 }
 
 /**

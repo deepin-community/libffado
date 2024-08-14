@@ -1,16 +1,16 @@
 FFADO v2.4
 ==========
 
-The FFADO project aims to provide a free driver implemenation for FireWire
+The FFADO project aims to provide a free driver implementation for FireWire
 (IEEE1394, iLink) based audio interfaces.  The focus of the project are on
 audio/music production rather than consumer audio.  This means that although
 we intend to supported all features at some point, consumer features are
 considered less important.  The most obvious example of a consumer feature
-is AC3/DTS passthrough support, which is unsupported at the moment.
+is AC3/DTS pass-through support, which is unsupported at the moment.
 
 This package provides the libffado shared library that provides a unified
 programming interface to configure and use all supported devices.  Currently
-this library is used by the 'firewire' backends of the jack audio connection
+this library is used by the "firewire" backends of the jack audio connection
 kit sound server (jackaudio.org).  This backend provides audio and midi
 support, and is available both in jackd and its multiprocessor variant
 jackdmp.  At present there is no support for ALSA or pulseaudio, although
@@ -24,9 +24,10 @@ parameters.
 
 Features
 --------
+
 * 24-bit audio input/output (number of channels only limited by interface
   hardware)
-* supports for all samplerates a device supports
+* supports for all sample rates a device supports
 * MIDI input/output (unlimited number of channels)
 * Support for S/PDIF and ADAT/SMUX I/O
 * Internal mixer and device control support for all officially supported 
@@ -36,7 +37,7 @@ Features
 Device Support
 --------------
 
-The 'officially supported' label is only given to devices that fulfil the
+The "officially supported" label is only given to devices that fulfil the
 following:
  * at least one of the developers has the device
  * the vendor provides development support (access to information)
@@ -66,14 +67,14 @@ been reported to work by users.  Note that FFADO may not support all device
 functions.
  * Presonus Firebox and Inspire1394
  * Presonus FireStudio Tube, FireStudio Project
- * M-Audio Ozonic, Firewire Solo
+ * M-Audio Ozonic, FireWire Solo
  * M-Audio Profire 2626, 610
  * M-Audio Audiophile and 410 (latest firmware and startup workaround needed,
    see http://sourceforge.net/p/ffado/mailman/message/30807938)
  * M-Audio 1814 and ProjectMix (mixer only, audio streaming not supported. and
-   Firewire 1814 needs startup workaround above)
+   FireWire 1814 needs startup workaround above)
  * Focusrite Saffire Pro24
- * Focusrite Saffire Pro24DSP (audio streaming only, DSP control not available)
+ * Focusrite Saffire Pro24 DSP (audio streaming only, DSP control not available)
  * Yamaha GO44 and GO46
 
 Devices that have been reported to (partially) work with the generic support:
@@ -93,7 +94,7 @@ MOTU devices reported to work with FFADO are:
  * MOTU Traveler
  * MOTU 828mkII, MOTU Ultralite, MOTU 896HD, MOTU 8pre, MOTU 4pre
  * Audio only: MOTU Ultralite mk3, MOTU Traveler mk3, MOTU 896mk3, MOTU 828mk3
- * Audio only, firewire interface only: MOTU Ultralite mk3 hybrid
+ * Audio only, FireWire interface only: MOTU Ultralite mk3 hybrid
 
 "Audio only" means that FFADO can be used to stream audio to and from the
 device, control sample rate and clock source.  Control of the mixer and DSP
@@ -101,7 +102,7 @@ functions is not presently supported.  It is planned but no ETA is available
 at this stage.
 
 Devices for which work is in progress.  These are not yet usable:
- * RME UFX and UCX firewire devices
+ * RME UFX and UCX FireWire devices
 
 Usupported devices:
  * Presonus FireStation
@@ -121,7 +122,7 @@ compatible with both scons 2 and 3.  Testing and bug reports when using
 scons 3 are welcomed.
 
 To build libffado you need several libraries. For all libraries a
-version is provided which is a 'known good' version.  The first few
+version is provided which is a "known good" version.  The first few
 libraries it seems it is not necessary that the version must
 match. The chances that it works also with an older versions are good:
 
@@ -158,26 +159,37 @@ For Qt 4.x use PyQt 4.x.
 SIP is only required to compile PyQt.  If using a binary package of PyQt
 SIP should not be needed.
 
+Packages for building on Debian/Ubuntu distributions are installed with:
+
+$ sudo apt-get install build-essential subversion scons libxml++2.6-dev \
+               libiec61883-dev libdbus-1-dev libdbus-c++-bin \
+               libdbus-c++-dev libconfig++-dev pyqt5-dev-tools \
+               python3-dbus.mainloop.pyqt5 pyqt5-sip
+
 How to build
 ------------
 
 If you want to build the release version you can simply do following:
 
 $ scons
-$ scons install
+$ scons install      [as root or via sudo]
 
 If you want some debug information (because something seems not
-to work correctly) you can try to do following:
+to work correctly) you can try to do:
 
 $ scons DEBUG=yes
-$ scons install
+$ scons install      [as root or via sudo]
+
+Cleaning a build is done with:
+
+$ scons -c -Q
 
 More extended instructions can be found here:
 http://subversion.ffado.org/wiki/InstallingFfadoFromSource
 
 NOTE: In order to build jackd with ffado support, you have 
 to install libffado before you build jackd. The backend to use in jackd is
-firewire.
+"firewire".
 
 NOTE: the beta versions are distributed with debugging enabled by default.
 
@@ -192,7 +204,7 @@ Running jackd
 The easiest way to run this is using qjackctl. There are only minor 
 differences with the other backends, however you should change some
 of the default values:
-- It is recommended to change the 'periods/buffer' field to 3, especially
+- It is recommended to change the "periods/buffer" field to 3, especially
   if you use low period sizes (=< 128)
 - It is recommended to raise the RT priority to 70.
 
@@ -238,6 +250,14 @@ configured with the "Low latency desktop" option (CONFIG_PREEMPT) enabled.
 Most distributions provide this as an option, often called "low latency". 
 In general it is no longer necessary to use an RT-patched kernel.
 
+Ffado-mixer look and feel
+-------------------------
+
+The look and feel of ffado-mixer can be changed via QT themes.  When a dark
+mode is required, install a suitable QT theme.  Some users have found the
+dark theme from UKUI to work well with ffado-mixer (often available in
+distributions through the qt5-ukui-platformtheme package).
+
 In case of problems
 -------------------
 
@@ -245,7 +265,7 @@ First of all, check whether your problem is a known issue, and whether
 it is a FFADO problem.  Use your chosen web search engine for this.
 
 Many distributor kernels now include the alternative ALSA audio streaming
-drivers for selected firewire audio interfaces (snd-bebob, snd-dice, etc). 
+drivers for selected FireWire audio interfaces (snd-bebob, snd-dice, etc). 
 These are developed independently of FFADO.  If these kernel modules are
 loaded then FFADO's streaming engine cannot be used: using jackd's
 "firewire" driver will fail because the kernel drivers have ownership of the
@@ -314,7 +334,7 @@ Be sure to include the following information:
 * the log file(s) (zipped/tar.gz'ed and attached)
 * the device you're trying to use
 * a description of what went wrong and how to reproduce it. You
-  preferrably try to figure out a sequence of steps that can reliably
+  preferably try to figure out a sequence of steps that can reliably
   reproduce the issue on your system. A one-time failure is very difficult
   to diagnose and/or fix.
 * the distribution and its version

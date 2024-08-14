@@ -3,7 +3,7 @@
  * Copyright (C) 2005-2008 by Pieter Palmers
  *
  * This file is part of FFADO
- * FFADO = Free Firewire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for Linux
  *
  * FFADO is based upon FreeBoB
  *
@@ -67,7 +67,7 @@ public:
     Util::Watchdog *getWatchdog() {return m_pWatchdog;};
 
    /**
-    * @brief get number of ports (firewire adapters) in this machine
+    * @brief get number of ports (FireWire adapters) in this machine
     *
     * @return the number of ports
     */

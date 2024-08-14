@@ -3,7 +3,7 @@
 #               2009      by Arnold Krille
 #
 # This file is part of FFADO
-# FFADO = Free Firewire (pro-)audio drivers for linux
+# FFADO = Free FireWire (pro-)audio drivers for Linux
 #
 # FFADO is based upon FreeBoB.
 #
@@ -27,9 +27,9 @@ import os
 # Python3 renamed ConfigParser to configparser.  Deal with this in a way
 # which maintains compatibility with python2.
 try:
-    from configparser import SafeConfigParser
-except:
-    from ConfigParser import SafeConfigParser
+    from configparser import ConfigParser
+except ImportError:
+    from ConfigParser import SafeConfigParser as ConfigParser
 
 # The urlopen()/urlencode() functions from urllib in python2 are in 
 # urllib.request and urllib.parse respectively under python2.
@@ -76,7 +76,7 @@ class ffado_registration:
 
         # parse the ini file
         self.config_filename = os.path.expanduser(INI_FILE_PATH)
-        self.parser = SafeConfigParser()
+        self.parser = ConfigParser()
         self.parser.read(self.config_filename)
         self.section_name = "%s:%X" % (self.ffado_version, self.guid)
         self.email = "(optional)"

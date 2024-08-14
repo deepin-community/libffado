@@ -3,7 +3,7 @@
  * Copyright (C) 2005-2008 by Pieter Palmers
  *
  * This file is part of FFADO
- * FFADO = Free Firewire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for Linux
  *
  * FFADO is based upon FreeBoB.
  *
@@ -238,7 +238,7 @@ main( int argc, char **argv )
     printf("FFADO Control DBUS service\n");
     printf("Part of the FFADO project -- www.ffado.org\n");
     printf("Version: %s\n", PACKAGE_VERSION);
-    printf("(C) 2008, Pieter Palmers\n");
+    printf("(C) 2008-2021, Pieter Palmers and others\n");
     printf("This program comes with ABSOLUTELY NO WARRANTY.\n");
     printf("-----------------------------------------------\n\n");
 

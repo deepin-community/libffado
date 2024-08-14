@@ -2,7 +2,7 @@
 #               2007-2009 by Arnold Krille
 #
 # This file is part of FFADO
-# FFADO = Free Firewire (pro-)audio drivers for linux
+# FFADO = Free FireWire (pro-)audio drivers for Linux
 #
 # FFADO is based upon FreeBoB.
 #
@@ -63,6 +63,8 @@ class FFADOWindow(QMainWindow):
         self.statuslogger = QStatusLogger(self, self.statusBar(), 20)
         logging.getLogger('').addHandler(self.statuslogger)
 
+        self.settings = QtCore.QSettings(self)
+
         self.manager = PanelManager(self)
         self.manager.connectionLost.connect(self.connectToDBUS)
 
@@ -98,6 +100,23 @@ class FFADOWindow(QMainWindow):
                 self.menuTheme[theme].setChecked(True)
             self.menuTheme[theme].triggered.connect(self.switchTheme )
             self.thememenu.addAction( self.menuTheme[theme] )
+
+        conftheme = self.settings.value("window/theme", "ukui-dark")
+        contains = False
+        for theme in self.menuTheme:
+            if theme.__str__() == conftheme:
+                contains = True
+                break
+        if contains:
+            for theme in self.menuTheme:
+                if theme.__str__() != conftheme:
+                    self.menuTheme[theme].setChecked(False)
+                    self.menuTheme[theme].setDisabled(False)
+            for theme in self.menuTheme:
+                if theme.__str__() == conftheme:
+                    self.menuTheme[theme].setDisabled(True)
+                    QApplication.setStyle(QStyleFactory.create(theme))
+                    self.settings.setValue("window/theme", theme.__str__())
 
         self.updateaction = QAction(QIcon.fromTheme("view-refresh"),"&Update Mixer Panels", self)
         self.updateaction.setEnabled(False)
@@ -135,6 +154,7 @@ class FFADOWindow(QMainWindow):
             if self.menuTheme[theme].isChecked() :
                 self.menuTheme[theme].setDisabled(True)
                 QApplication.setStyle(QStyleFactory.create(theme))
+                self.settings.setValue("window/theme", theme.__str__())
 
     def closeEvent(self, event):
         log.info("closeEvent()")
@@ -173,13 +193,13 @@ class FFADOWindow(QMainWindow):
 
     def aboutFFADO(self):
         QMessageBox.about( self, "About FFADO", """
-<h1>ffado.org</h1>
+<h1><a href="http://ffado.org">ffado.org</a></h1>
 
 <p>{ffado_version}</p>
 
-<p>FFADO is the new approach to have firewire audio on linux.</p>
+<p><a href="http://ffado.org">FFADO</a> is the new approach to have FireWire audio on Linux.</p>
 
-        <p>&copy; 2006-2018 by the FFADO developers<br />ffado is licensed under the GPLv3, for the full license text see <a href="http://www.gnu.org/licenses/">www.gnu.org/licenses</a> or the LICENSE.* files shipped with ffado.</p>
+        <p>&copy; 2006-2021 by the FFADO developers<br />ffado is licensed under the GPLv3, for the full license text see <a href="http://www.gnu.org/licenses/">www.gnu.org/licenses</a> or the LICENSE.* files shipped with ffado.</p>
 
 <p>FFADO developers are:<ul>
 <li>Pieter Palmers
@@ -193,6 +213,7 @@ with contributions from:<ul>
 <li>Adrian Knoth
 <li>Stefan Richter
 <li>Jano Svitok
+<li>Pander Musubi
 </ul>
         """.format(ffado_version=get_ffado_version(), thisyear=datetime.datetime.now().year))
 

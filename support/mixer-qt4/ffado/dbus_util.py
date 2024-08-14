@@ -3,7 +3,7 @@
 #               2007-2008 by Arnold Krille
 #
 # This file is part of FFADO
-# FFADO = Free Firewire (pro-)audio drivers for linux
+# FFADO = Free FireWire (pro-)audio drivers for Linux
 #
 # FFADO is based upon FreeBoB.
 #
@@ -69,9 +69,9 @@ class ControlInterface:
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Continuous')
             if idx == None:
-                return dev_cont.getValue()
+                return int(dev_cont.getValue())
             else:
-                return dev_cont.getValueIdx(idx)
+                return int(dev_cont.getValueIdx(idx))
         except:
             log.error("Failed to get Continuous %s on server %s" % (path, self.servername))
             return 0
@@ -100,9 +100,9 @@ class ControlInterface:
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Discrete')
             if idx == None:
-                return dev_cont.getValue()
+                return int(dev_cont.getValue())
             else:
-                return dev_cont.getValueIdx(idx)
+                return int(dev_cont.getValueIdx(idx))
         except:
             log.error("Failed to get Discrete %s on server %s" % (path, self.servername))
             return 0
@@ -152,7 +152,7 @@ class ControlInterface:
         try:
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.MatrixMixer')
-            return dev_cont.getValue(row, col)
+            return int(dev_cont.getValue(row, col))
         except:
             log.error("Failed to get MatrixMixer %s on server %s" % (path, self.servername))
             return 0

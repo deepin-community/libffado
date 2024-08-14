@@ -2,7 +2,7 @@
  * Copyright (C) 2005-2008 by Pieter Palmers
  *
  * This file is part of FFADO
- * FFADO = Free Firewire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for Linux
  *
  * FFADO is based upon FreeBoB
  *
@@ -115,7 +115,7 @@ public:
 
 private:
     bool doOpen(enum eDirection t, int, enum eBlocking);
-    static void notifyCallbackStatic(sigval_t t) {
+    static void notifyCallbackStatic(union sigval t) {
         PosixMessageQueue *obj;
         obj = static_cast<PosixMessageQueue *>(t.sival_ptr);
         obj->notifyCallback();
