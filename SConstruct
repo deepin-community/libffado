@@ -5,7 +5,7 @@
 # Copyright (C) 2008, 2012 Jonathan Woithe
 #
 # This file is part of FFADO
-# FFADO = Free Firewire (pro-)audio drivers for linux
+# FFADO = Free FireWire (pro-)audio drivers for Linux
 #
 # FFADO is based upon FreeBoB.
 #
@@ -25,7 +25,7 @@
 from __future__ import print_function
 
 FFADO_API_VERSION = "9"
-FFADO_VERSION="2.4.4"
+FFADO_VERSION="2.4.9"
 
 from subprocess import Popen, PIPE, check_output
 import os
@@ -49,9 +49,10 @@ checks in the code.""", True ),
     PathVariable( "BINDIR", "Overwrite the directory where apps are installed to.", "$PREFIX/bin", PathVariable.PathAccept ),
     PathVariable( "LIBDIR", "Overwrite the directory where libs are installed to.", "$PREFIX/lib", PathVariable.PathAccept ),
     PathVariable( "INCLUDEDIR", "Overwrite the directory where headers are installed to.", "$PREFIX/include", PathVariable.PathAccept ),
-    PathVariable( "SHAREDIR", "Overwrite the directory where misc shared files are installed to.", "$PREFIX/share/libffado", PathVariable.PathAccept ),
+    PathVariable( "DATADIR", "Overwrite the directory where platform-independent files are installed to.", "$PREFIX/share", PathVariable.PathAccept ),
+    PathVariable( "SHAREDIR", "Overwrite the directory where misc shared files are installed to.", "$DATADIR/libffado", PathVariable.PathAccept ),
     PathVariable( "LIBDATADIR", "Location for architecture-dependent data.", "$LIBDIR/libffado", PathVariable.PathAccept ),
-    PathVariable( "MANDIR", "Overwrite the directory where manpages are installed", "$PREFIX/man", PathVariable.PathAccept ),
+    PathVariable( "MANDIR", "Overwrite the directory where manpages are installed", "$DATADIR/man", PathVariable.PathAccept ),
     PathVariable( "PYPKGDIR", "The directory where the python modules get installed.",
         distutils.sysconfig.get_python_lib( prefix="$PREFIX" ), PathVariable.PathAccept ),
     PathVariable( "UDEVDIR", "Overwrite the directory where udev rules are installed to.", "/lib/udev/rules.d/", PathVariable.PathAccept ),
@@ -92,7 +93,7 @@ Build the tests in their directory. As some contain quite some functionality,
 ## Load the builders in config
 buildenv=os.environ
 
-env = Environment( tools=['default','scanreplace','pyuic','pyuic4','pyuic5','dbus','doxygen','pkgconfig'], toolpath=['admin'], ENV = buildenv, options=opts )
+env = Environment( tools=['default','scanreplace','dbus','doxygen','pkgconfig'], toolpath=['admin'], ENV = buildenv, options=opts )
 
 custom_flags = False
 
@@ -209,8 +210,6 @@ tests = {
     "CheckPKG" : CheckPKG,
 }
 tests.update( env['PKGCONFIG_TESTS'] )
-tests.update( env['PYUIC_TESTS'] )
-tests.update( env['PYUIC4_TESTS'] )
 
 conf = Configure( env,
     custom_tests = tests,
@@ -396,6 +395,18 @@ results above get rechecked.
     env['HAVE_LRINTF'] = HAVE_LRINTF;
     env.Replace(CFLAGS=oldcf)
 
+    if not conf.CheckFunc('argp_parse'):
+        if not conf.CheckLib('argp', 'argp_parse'):
+            print("""
+The argp_parse() function is not in the system's libc and the argp-standalone
+library cannot be found.
+
+Suggestion: install the argp-standalone library.  Remove the cache with
+"rm -Rf .sconsign.dblite cache" before retying the build so the argp checks
+are retried.
+""")
+            Exit( 1 )
+
 #
 # Optional checks follow:
 #
@@ -422,16 +433,6 @@ The prerequisites ('pyuic4'/'pyuic5' and the python-modules 'dbus' and
 'PyQt4'/'PyQt5', the packages could be named like dbus-python and PyQt) to
 build the mixer were not found, but BUILD_MIXER was requested.""")
             Exit( 1 )
-
-env['XDG_TOOLS'] = False
-if env['BUILD_MIXER'] == 'true':
-    if conf.CheckForApp( 'xdg-desktop-menu --help' ) and conf.CheckForApp( 'xdg-icon-resource --help' ):
-        env['XDG_TOOLS'] = True
-    else:
-        print("""
-I couldn't find the 'xdg-desktop-menu' and 'xdg-icon-resource' programs. These
-are needed to add the fancy entry for the mixer to your menu, but you can still
-start it by executing "ffado-mixer".""")
 
 #
 # Optional pkg-config
@@ -471,7 +472,7 @@ else:
 
 config_guess = conf.ConfigGuess()
 
-env = conf.Finish()
+conf.Finish()
 
 if env['DEBUG']:
     print("Doing a debug build")
@@ -523,6 +524,7 @@ env.destdir = ARGUMENTS.get( 'DESTDIR', "" )
 env['BINDIR'] = Template( env['BINDIR'] ).safe_substitute( env )
 env['LIBDIR'] = Template( env['LIBDIR'] ).safe_substitute( env )
 env['INCLUDEDIR'] = Template( env['INCLUDEDIR'] ).safe_substitute( env )
+env['DATADIR'] = Template( env['DATADIR'] ).safe_substitute( env )
 env['SHAREDIR'] = Template( env['SHAREDIR'] ).safe_substitute( env )
 env['LIBDATADIR'] = Template( env['LIBDATADIR'] ).safe_substitute( env )
 env['UDEVDIR'] = Template( env['UDEVDIR'] ).safe_substitute( env )
@@ -531,18 +533,23 @@ env['prefix'] = Template( env.destdir + env['PREFIX'] ).safe_substitute( env )
 env['bindir'] = Template( env.destdir + env['BINDIR'] ).safe_substitute( env )
 env['libdir'] = Template( env.destdir + env['LIBDIR'] ).safe_substitute( env )
 env['includedir'] = Template( env.destdir + env['INCLUDEDIR'] ).safe_substitute( env )
+env['datadir'] = Template( env.destdir + env['DATADIR'] ).safe_substitute( env )
 env['sharedir'] = Template( env.destdir + env['SHAREDIR'] ).safe_substitute( env )
 env['libdatadir'] = Template( env.destdir + env['LIBDATADIR'] ).safe_substitute( env )
 env['mandir'] = Template( env.destdir + env['MANDIR'] ).safe_substitute( env )
 env['pypkgdir'] = Template( env.destdir + env['PYPKGDIR'] ).safe_substitute( env )
 env['udevdir'] = Template( env.destdir + env['UDEVDIR'] ).safe_substitute( env )
 env['PYPKGDIR'] = Template( env['PYPKGDIR'] ).safe_substitute( env )
-env['metainfodir'] = Template( env.destdir + "/usr/share/metainfo" ).safe_substitute( env )
+env['metainfodir'] = Template( env.destdir + env['DATADIR'] + "/metainfo" ).safe_substitute( env )
+env['desktopdir'] = Template( env.destdir + env['DATADIR'] + "/applications" ).safe_substitute( env )
+env['appicondir64'] = Template( env.destdir + env['DATADIR'] + "/icons/hicolor/64x64/apps" ).safe_substitute( env )
 
+env.Command( target=env['datadir'], source="", action=Mkdir( env['datadir'] ) )
 env.Command( target=env['sharedir'], source="", action=Mkdir( env['sharedir'] ) )
 
 env.Alias( "install", env['libdir'] )
 env.Alias( "install", env['includedir'] )
+env.Alias( "install", env['datadir'] )
 env.Alias( "install", env['sharedir'] )
 env.Alias( "install", env['libdatadir'] )
 env.Alias( "install", env['bindir'] )
@@ -550,6 +557,8 @@ env.Alias( "install", env['mandir'] )
 if env['BUILD_MIXER'] == 'true':
     env.Alias( "install", env['pypkgdir'] )
     env.Alias( "install", env['metainfodir'] )
+    env.Alias('install', env['desktopdir'])
+    env.Alias('install', env['appicondir64'])
 
 #
 # shamelessly copied from the Ardour scons file
@@ -936,42 +945,10 @@ if not env.GetOption('clean'):
     if env['BUILD_DOC'] != 'none':
         Default( 'doc' )
 
-env.Install( env['metainfodir'], "support/xdg/ffado-mixer.appdata.xml" )
-
-#
-# Deal with the DESTDIR vs. xdg-tools conflict (which is basicely that the
-# xdg-tools can't deal with DESTDIR, so the packagers have to deal with this
-# their own :-/
-#
-if len(env.destdir) > 0:
-    if not len( ARGUMENTS.get( "WILL_DEAL_WITH_XDG_MYSELF", "" ) ) > 0:
-        print("""
-WARNING!
-You are using the (packagers) option DESTDIR to install this package to a
-different place than the real prefix. As the xdg-tools can't cope with
-that, the .desktop-files are not installed by this build, you have to
-deal with them your own.
-(And you have to look into the SConstruct to learn how to disable this
-message.)
-""")
-else:
-
-    def CleanAction( action ):
-        if env.GetOption( "clean" ):
-            env.Execute( action )
-
-    if env['BUILD_MIXER'] == 'true' and env['XDG_TOOLS']:
-        if not env.GetOption("clean"):
-            action = "install"
-        else:
-            action = "uninstall"
-        mixerdesktopaction = env.Action( "-xdg-desktop-menu %s support/xdg/ffado.org-ffadomixer.desktop" % action )
-        mixericonaction = env.Action( "-xdg-icon-resource %s --size 64 --novendor --context apps support/xdg/hi64-apps-ffado.png ffado" % action )
-        env.Command( "__xdgstuff1", None, mixerdesktopaction )
-        env.Command( "__xdgstuff2", None, mixericonaction )
-        env.Alias( "install", ["__xdgstuff1", "__xdgstuff2" ] )
-        CleanAction( mixerdesktopaction )
-        CleanAction( mixericonaction )
+if env['BUILD_MIXER'] == 'true':
+    env.Install( env['metainfodir'], "support/xdg/org.ffado.FfadoMixer.metainfo.xml" )
+    env.Install( env['desktopdir'], 'support/xdg/org.ffado.FfadoMixer.desktop' )
+    env.Install( env['appicondir64'], 'support/xdg/hi64-apps-ffado.png' )
 
 #
 # Create a tags-file for easier emacs/vim-source-browsing

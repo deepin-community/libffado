@@ -36,7 +36,7 @@ Bug-Debian: https://bugs.debian.org/933813
  
 -config_guess = conf.ConfigGuess()
 -
- env = conf.Finish()
+ conf.Finish()
  
  if env['DEBUG']:
 @@ -564,7 +555,9 @@

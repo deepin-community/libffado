@@ -2,7 +2,7 @@
  * Copyright (C) 2005-2008 by Pieter Palmers
  *
  * This file is part of FFADO
- * FFADO = Free Firewire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for Linux
  *
  * FFADO is based upon FreeBoB
  *
@@ -306,7 +306,7 @@ int main(int argc, char *argv[])
             case 'h':
                 printf( "USAGE:\n\
  Currently two options are understood:\n\
-  --port <number> or -p <number> selects the firewire-port to use, default is 0\n\
+  --port <number> or -p <number> selects the FireWire-port to use, default is 0\n\
   --verbose <number> or -v <number> selects the verbose level, default is 4\n\
   --help or -h shows this help and exits.\n\
 " );

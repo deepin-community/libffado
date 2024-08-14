@@ -3,7 +3,7 @@
 # Copyright (C) 2005-2008 by Pieter Palmers
 #
 # This file is part of FFADO
-# FFADO = Free Firewire (pro-)audio drivers for linux
+# FFADO = Free FireWire (pro-)audio drivers for Linux
 #
 # FFADO is based upon FreeBoB.
 #
@@ -49,10 +49,10 @@ class MAudio_BeBoB(QWidget):
 
     info = {
         0x0000000a: (0, "Ozonic"),
-        0x00010062: (1, "Firewire Solo"),
-        0x00010060: (2, "Firewire Audiophile"),
-        0x00010046: (3, "Firewire 410"),
-        0x00010071: (4, "Firewire 1814"),
+        0x00010062: (1, "FireWire Solo"),
+        0x00010060: (2, "FireWire Audiophile"),
+        0x00010046: (3, "FireWire 410"),
+        0x00010071: (4, "FireWire 1814"),
         0x00010091: (4, "ProjectMix I/O"),
     }
 
@@ -587,7 +587,7 @@ class MAudio_BeBoB(QWidget):
             idx = params[1]
             curr = self.hw.getContignuous(path, idx)
             state = -(curr / 0x7FFE) * 50 + 50
-            ctl.setValue(state)
+            ctl.setValue(int(state))
             ctl.valueChanged.connect(self.updatePanning)
 
         for ctl, params in list(self.Volumes.items()):
@@ -598,7 +598,7 @@ class MAudio_BeBoB(QWidget):
 
             db = self.hw.getContignuous(path, idx)
             vol = self.db2vol(db)
-            ctl.setValue(vol)
+            ctl.setValue(int(vol))
             ctl.valueChanged.connect(self.updateVolume)
 
             # to activate link button, a pair is checked twice, sign...

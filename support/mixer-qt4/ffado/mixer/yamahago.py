@@ -3,7 +3,7 @@
 # Copyright (C) 2005-2008 by Pieter Palmers
 #
 # This file is part of FFADO
-# FFADO = Free Firewire (pro-)audio drivers for linux
+# FFADO = Free FireWire (pro-)audio drivers for Linux
 #
 # FFADO is based upon FreeBoB.
 #
@@ -142,7 +142,7 @@ class YamahaGo(QWidget):
 
             db = self.hw.getContignuous(path, idx)
             vol = self.db2vol(db)
-            ctl.setValue(vol)
+            ctl.setValue(int(vol))
 
             link = params[4]
 

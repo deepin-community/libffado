@@ -3,7 +3,7 @@
  * Copyright (C) 2005-2008 by Pieter Palmers
  *
  * This file is part of FFADO
- * FFADO = Free Firewire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for Linux
  *
  * FFADO is based upon FreeBoB
  *
@@ -487,7 +487,7 @@ public:
     DeviceManager& getDeviceManager()
         {return m_pDeviceManager;};
 private:
-    ffado_smartptr<ConfigRom>( m_pConfigRom );
+    ffado_smartptr<ConfigRom> m_pConfigRom;
     DeviceManager& m_pDeviceManager;
     Control::Container* m_genericContainer;
 protected:

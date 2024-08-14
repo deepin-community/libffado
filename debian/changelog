@@ -1,3 +1,72 @@
+libffado (2.4.9-1) unstable; urgency=medium
+
+  * New upstream version 2.4.9
+  * debian/control: Bump Standards-Version
+  * debian/patches: Remove no longer necessary patch
+  * debian/ffado-mixer-qt4.install: Use installed files
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Mon, 08 Jul 2024 23:36:17 +0200
+
+libffado (2.4.8-2) unstable; urgency=medium
+
+  * Team upload
+  * debian/libffado-dev.docs: Update for upstream subdirectory
+  * debian/copyright: Update for upstream subdirectory
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 15 Mar 2024 15:47:04 -0400
+
+libffado (2.4.8-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream release
+  * Drop configparser patch: applied in new release
+  * Refresh patches
+  * Specify subdirectory needed for 2.4.8 tarball
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 14 Mar 2024 16:24:35 -0400
+
+libffado (2.4.7-3) unstable; urgency=medium
+
+  * Team upload
+  * Add 2 patches to fix build with Python 3.12
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 14 Mar 2024 08:46:27 -0400
+
+libffado (2.4.7-2) unstable; urgency=medium
+
+  [ Chris Hofstaedtler ]
+  * Move udev files from /lib to /usr/lib, including protective diversion
+    against Multi-Arch: same file loss scenario (DEP17 P7 M10). (Closes:
+    #1056915)
+
+  [ Sebastian Ramacher ]
+  * debian/control: Bump Standards-Version
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Sat, 02 Dec 2023 13:19:27 +0100
+
+libffado (2.4.7-1) unstable; urgency=medium
+
+  * New upstream version 2.4.7
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Fri, 02 Dec 2022 22:00:57 +0100
+
+libffado (2.4.6-1) unstable; urgency=medium
+
+  * New upstream version 2.4.6
+  * debian/control: Bump Standards-Version
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Tue, 12 Jul 2022 10:43:49 +0200
+
+libffado (2.4.5-1) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * Remove constraints unnecessary since buster
+
+  [ Sebastian Ramacher ]
+  * New upstream version 2.4.5
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Sat, 26 Feb 2022 15:25:54 +0100
+
 libffado (2.4.4-3) unstable; urgency=medium
 
   * debian/control: Move build dependencies for mixer to Build-Depends-Indep

@@ -4,7 +4,7 @@
  * Copyright (C) 2012 by Jonathan Woithe
  *
  * This file is part of FFADO
- * FFADO = Free Firewire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for Linux
  *
  * FFADO is based upon FreeBoB
  *
@@ -182,9 +182,9 @@ Ieee1394Service::configurationUpdated()
 #define DEVICEFAILTEXT "Could not get libraw1394 handle.\n\
 This usually means:\n\
  a) The device-node /dev/raw1394 doesn't exists because you don't have a\n\
-    (recognized) firewire controller.\n \
+    (recognized) FireWire controller.\n \
  b) The modules needed aren't loaded. This is not in the scope of ffado but of\n\
-    your distribution, so if you have a firewire controller that should be\n\
+    your distribution, so if you have a FireWire controller that should be\n\
     supported and the modules aren't loaded, file a bug with your distributions\n\
     bug tracker.\n \
  c) You don't have permissions to access /dev/raw1394. 'ls -l /dev/raw1394'\n\

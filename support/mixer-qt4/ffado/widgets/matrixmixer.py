@@ -4,7 +4,7 @@
 #               2013 by Philippe Carriere
 #
 # This file is part of FFADO
-# FFADO = Free Firewire (pro-)audio drivers for linux
+# FFADO = Free FireWire (pro-)audio drivers for Linux
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -89,9 +89,9 @@ class ColorForNumber:
         lc = self.colors[low]
         hc = self.colors[high]
         return QColor(
-                (1-f)*lc.red()   + f*hc.red(),
-                (1-f)*lc.green() + f*hc.green(),
-                (1-f)*lc.blue()  + f*hc.blue() )
+                int((1-f)*lc.red()   + f*hc.red()),
+                int((1-f)*lc.green() + f*hc.green()),
+                int((1-f)*lc.blue()  + f*hc.blue()) )
 
 class BckgrdColorForNumber(ColorForNumber):
     def __init__(self):
@@ -127,7 +127,7 @@ class MixerNode(QAbstractSlider):
         if max == -1:
             max = pow(2, 16)-1
         self.setRange(0, max)
-        self.setValue(value)
+        self.setValue(int(value))
         self.valueChanged.connect(self.internalValueChanged)
 
         self.setSmall(False)
@@ -163,7 +163,7 @@ class MixerNode(QAbstractSlider):
             self.addAction(action)
             self.mute_action = QAction("Mute", self)
             self.mute_action.setCheckable(True)
-            self.mute_action.setChecked(muted)
+            self.mute_action.setChecked(bool(muted))
             self.mute_action.triggered.connect(self.mapper.map)
             self.mapper.setMapping(self.mute_action, "Mute")
             self.addAction(self.mute_action)
@@ -177,7 +177,7 @@ class MixerNode(QAbstractSlider):
                 self.addAction(action)
             self.inv_action = QAction("Invert", self)
             self.inv_action.setCheckable(True)
-            self.inv_action.setChecked(inverted)
+            self.inv_action.setChecked(bool(inverted))
             self.inv_action.triggered.connect(self.mapper.map)
             self.mapper.setMapping(self.inv_action, "Invert")
             self.addAction(self.inv_action)
@@ -210,7 +210,9 @@ class MixerNode(QAbstractSlider):
             newpos = ev.posF() if ffado_pyqt_version == 4 else ev.localPos()
             change = newpos.y() - self.pos.y()
             #log.debug("MixerNode.mouseReleaseEvent() change %s" % (str(change)))
-            self.setValue( self.tmpvalue - math.copysign(pow(abs(change), 2), change) )
+            self.setValue(
+                int(self.tmpvalue - math.copysign(pow(abs(change), 2), change))
+            )
             ev.accept()
 
     def mouseReleaseEvent(self, ev):
@@ -218,7 +220,9 @@ class MixerNode(QAbstractSlider):
             newpos = ev.posF() if ffado_pyqt_version == 4 else ev.localPos()
             change = newpos.y() - self.pos.y()
             #log.debug("MixerNode.mouseReleaseEvent() change %s" % (str(change)))
-            self.setValue( self.tmpvalue - math.copysign(pow(abs(change), 2), change) )
+            self.setValue(
+                int(self.tmpvalue - math.copysign(pow(abs(change), 2), change))
+            )
             self.pos = QtCore.QPointF(0, 0)
             del self.tmpvalue
             ev.accept()
@@ -229,7 +233,9 @@ class MixerNode(QAbstractSlider):
         if (ev.modifiers() & Qt.ControlModifier):
             tmpvalue = self.value()
             change = ev.delta()/8
-            self.setValue( tmpvalue + math.copysign(pow(abs(change), 2), change) )
+            self.setValue(
+                int(tmpvalue + math.copysign(pow(abs(change), 2), change))
+            )
             ev.accept()
         else:
             ev.ignore()
@@ -300,7 +306,7 @@ class MixerChannel(QWidget):
         self.lbl.setAlignment(Qt.AlignCenter)
         if (smallFont):
             font = self.lbl.font()
-            font.setPointSize(font.pointSize()/1.5)
+            font.setPointSize(int(font.pointSize()/1.5 + 0.5))
             self.lbl.setFont(font)
         layout.addWidget(self.lbl, 0, 0, 1, 2)
         self.hideChannel(False)
@@ -421,7 +427,7 @@ class MatrixControlView(QWidget):
                     node = MixerNode(j, i, val, sliderMaxValue, mute_value, inv_value, self, self)
                 if (smallFont):
                     font = node.font()
-                    font.setPointSize(font.pointSize()/1.5)
+                    font.setPointSize(int(font.pointSize()/1.5 + 0.5))
                     node.setFont(font)
                 self.nodeConnect(node)
                 layout.addWidget(node, i+1, j+1)
@@ -528,10 +534,10 @@ class MatrixControlView(QWidget):
             for y in range(len(self.items[x])):
                 val = self.interface.getValue(x,y)
                 if (self.transpose):
-                    self.items[y][x].setValue(val)
+                    self.items[y][x].setValue(int(val))
                     self.items[y][x].internalValueChanged(val)
                 else:
-                    self.items[x][y].setValue(val)
+                    self.items[x][y].setValue(int(val))
                     self.items[x][y].internalValueChanged(val)
 
     def saveSettings(self, indent):
@@ -693,9 +699,9 @@ class VolumeSlider(QSlider):
         self.setTickPosition(QSlider.TicksBothSides)
         v_min = 10.0*toDBvalue(0)
         v_max = 10.0*toDBvalue(65536)
-        self.setTickInterval((v_max-v_min)/10)
-        self.setMinimum(v_min)
-        self.setMaximum(v_max)
+        self.setTickInterval(int((v_max-v_min)/10))
+        self.setMinimum(int(v_min))
+        self.setMaximum(int(v_max))
         self.setSingleStep(1)
         self.sliderSetValue(value)
         self.In = In
@@ -706,7 +712,7 @@ class VolumeSlider(QSlider):
         #log.debug("Volume slider value changed( %i )" % value)
         v = 10.0*toDBvalue(value)
         #log.debug("Volume slider value changed(dB: %g )" % (0.1*v))
-        self.setValue(v)
+        self.setValue(int(v))
 
     def sliderReadValue(self, value):
         return fromDBvalue(0.1*value)
@@ -762,7 +768,7 @@ class BalanceSlider(QSlider):
         v_min = -50
         v_max = 50
         self.setTickPosition(QSlider.TicksBothSides)
-        self.setTickInterval((v_max-v_min)/2)
+        self.setTickInterval(int((v_max-v_min)/2))
         self.setMinimum(v_min)
         self.setMaximum(v_max)
         self.setSingleStep(1)

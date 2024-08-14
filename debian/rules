@@ -10,6 +10,7 @@ FLAGS= \
 			PREFIX=/usr \
 			DESTDIR=$(CURDIR)/debian/tmp \
 			LIBDIR=/usr/lib/$(DEB_HOST_MULTIARCH) \
+			UDEVDIR=/usr/lib/udev/rules.d/ \
 			SHAREDIR=/usr/share/libffado2/ \
 			MANDIR=/usr/share/man/ \
 			PYPKGDIR=/usr/share/ffado-mixer-qt4/ \
