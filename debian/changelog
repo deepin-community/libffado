@@ -1,3 +1,9 @@
+libffado (2.4.4-3deepin0) unstable; urgency=medium
+
+  * No source change upload against GCC 12.
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Thu, 19 Sep 2024 22:54:00 +0800
+
 libffado (2.4.4-3) unstable; urgency=medium
 
   * debian/control: Move build dependencies for mixer to Build-Depends-Indep
